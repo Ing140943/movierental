@@ -1,7 +1,8 @@
 # Demonstrate the movie rental code.
 # Create a customer with some movies and print a statement.
 
-from movie import Movie, PriceCode
+from movie import Movie
+from price_code import PriceCode
 from rental import Rental
 from customer import Customer
 
