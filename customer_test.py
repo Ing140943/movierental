@@ -4,6 +4,7 @@ from customer import Customer
 from rental import Rental
 from movie import Movie
 from price_code import PriceCode
+from datetime import date
 
 
 class CustomerTest(unittest.TestCase): 
@@ -15,10 +16,11 @@ class CustomerTest(unittest.TestCase):
 		c = a customer
 		movies = list of some movies
 		"""
-		self.c = Customer("Movie Mogul")
-		self.new_movie = Movie("Mulan", PriceCode.new_release)
-		self.regular_movie = Movie("CitizenFour", PriceCode.normal)
-		self.childrens_movie = Movie("Frozen", PriceCode.childrens)
+		self.year = date.today().year
+		self.customer = Customer("Movie Mogul")
+		self.new_movie = Movie("Mulan", self.year)
+		self.regular_movie = Movie("CitizenFour", 2010)
+		self.childrens_movie = Movie("Frozen", 2016, ['Children'])
 		
 	@unittest.skip("No convenient way to test")
 	def test_billing():
@@ -26,7 +28,7 @@ class CustomerTest(unittest.TestCase):
 		pass
 	
 	def test_statement(self):
-		stmt = self.c.statement()
+		stmt = self.customer.statement()
 		# visual testing
 		print(stmt)
 		# get total charges from statement using a regex
@@ -35,8 +37,8 @@ class CustomerTest(unittest.TestCase):
 		self.assertIsNotNone(matches)
 		self.assertEqual("0.00", matches[1])
 		# add a rental
-		self.c.add_rental(Rental(self.new_movie, 4)) # days
-		stmt = self.c.statement()
+		self.customer.add_rental(Rental(self.new_movie, 4)) # days
+		stmt = self.customer.statement()
 		matches = re.match(pattern, stmt.replace('\n',''), flags=re.DOTALL)
 		self.assertIsNotNone(matches)
 		self.assertEqual("12.00", matches[1])
