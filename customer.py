@@ -1,6 +1,6 @@
 from rental import Rental
-from movie import Movie, PriceCode
-import logging
+from movie import Movie
+from price_code import PriceCode
 
 
 class Customer:
@@ -36,29 +36,21 @@ class Customer:
         fmt = "{:32s}   {:4d} {:6.2f}\n"
 
         total_amount = 0  # total charges
-        frequent_renter_points = 0
+        total_frequent_renter_points = 0
         # new version
         for rental in self.rentals:
-            amount = 0
-            rented_movie = rental.get_movie().get_price_code()
             days_rented = rental.get_days_rented()
-            if not isinstance(rented_movie, PriceCode):
-                log = logging.getLogger()
-                log.error(
-                    f"Movie {rental.get_movie()} has unrecognized priceCode {rented_movie}")
-            else:
-                amount += rented_movie.price(days_rented)
-                frequent_renter_points += rented_movie.points(days_rented)
+            total_frequent_renter_points += rental.get_point()
             #  add detail line to statement
-            statement += fmt.format(rental.get_movie().get_title(), days_rented, amount)
+            statement += fmt.format(rental.get_movie_title(), days_rented, rental.get_price())
             # and accumulate activity
-            total_amount += amount
+            total_amount += rental.get_price()
 
         # footer: summary of charges
         statement += "\n"
         statement += "{:32s} {:6s} {:6.2f}\n".format(
             "Total Charges", "", total_amount)
-        statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)
+        statement += "Frequent Renter Points earned: {}\n".format(total_frequent_renter_points)
 
         return statement
 
