@@ -15,7 +15,8 @@ def make_movies():
         movie_catalog.get_movie("Mulan"),
         movie_catalog.get_movie("Almost Holy"),
         movie_catalog.get_movie("Weathering With You"),
-        movie_catalog.get_movie("Deadpool")
+        movie_catalog.get_movie("Deadpool"),
+        movie_catalog.get_movie("Weathering With You")
     ]
     return movies
 
